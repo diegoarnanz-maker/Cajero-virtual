@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Inicio - Cajero Virtual</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+  <body class="flex flex-col min-h-screen bg-gray-100">
+    <!-- Navbar -->
+    <nav class="bg-gray-800 p-4">
+      <div class="container mx-auto flex justify-between items-center">
+        <a href="/cuenta" class="text-white font-bold text-xl">
+          Cajero Virtual
+        </a>
+        
+        <div class="flex items-center">
+          <a th:if="${session.usuario == null}" href="/cuenta/login" class="text-green-500 hover:text-green-700 ml-4">
+            Iniciar sesión
+          </a>
+          <a th:if="${session.usuario != null}" href="/cuenta/menu" class="text-green-500 hover:text-green-700 ml-4">
+            Realizar operaciones
+          </a>
+          <div th:if="${session.usuario != null}" class="ml-4 p-2 bg-gray-700 rounded-md">
+            <span class="text-white">
+              Cuenta: <span class="font-semibold" th:text="${session.cuenta.idCuenta}"></span>
+              | Usuario: <span class="font-semibold" th:text="${#strings.toUpperCase(session.usuario.username)}"></span>
+            </span>
+            
+            <a href="/cuenta/logout" class="text-green-500 hover:text-green-700 ml-4">
+              Cerrar sesión
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto my-8 text-center">
+      <h1 class="text-3xl font-bold text-gray-800">
+        ¡Bienvenido a su cajero virtual:
+        <span
+          th:text="${session.cuenta != null ? ' #' + session.cuenta.idCuenta : 'Sin identificar'}"
+        ></span
+        >!
+      </h1>
+      <p class="text-gray-600 mt-4">
+        <span th:text="${session.cuenta != null ? '¿Preparado para explorar las funciones de su cuenta y gestionar su saldo?' : 'Inicia sesion para explorar las funciones y gestionar su saldo'}"></span>
+      </p>
+      <div class="flex justify-center mt-8">
+        <img
+          src="/home.png"
+          alt="Imagen de bienvenida"
+          class="w-full max-w-sm rounded-lg shadow-md"
+        />
+      </div>
+      <a
+        th:if="${session.cuenta == null}"
+        href="/cuenta/login"
+        class="text-green-500 bg-gray-800 hover:bg-green-500 hover:text-white border-2 border-green-500 rounded-lg px-6 py-2 mt-4 inline-block transition duration-300 ease-in-out shadow-lg transform hover:scale-105"
+      >
+        Iniciar sesión
+      </a>
+      <a
+        th:if="${session.cuenta != null}"
+        href="/cuenta/menu"
+        class="text-green-500 bg-gray-800 hover:bg-green-500 hover:text-white border-2 border-green-500 rounded-lg px-6 py-2 mt-4 inline-block transition duration-300 ease-in-out shadow-lg transform hover:scale-105"
+      >
+        Realizar operación bancaria
+      </a>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white p-4 text-center mt-auto">
+      <div class="container mx-auto flex justify-center items-center">
+        <div class="flex space-x-6">
+          <a
+            href="https://github.com/diegoarnanz-maker"
+            target="_blank"
+            class="text-white hover:text-gray-400 transition duration-300 ease-in-out"
+          >
+            <i class="fab fa-github text-2xl"></i> GitHub
+          </a>
+          <a
+            href="https://diegoarnanz-maker-portfolio.netlify.app/"
+            target="_blank"
+            class="text-white hover:text-gray-400 transition duration-300 ease-in-out"
+          >
+            <i class="fas fa-briefcase text-2xl"></i> Portfolio
+          </a>
+        </div>
+      </div>
+
+      <!-- Monería, tipo asistente por si tienes algún problema -->
+      <a
+        href="https://wa.me/+34616252588"
+        target="_blank"
+        class="flex items-center fixed bottom-5 right-5 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition duration-300 ease-in-out"
+        title="Asistente Virtual del Banco"
+      >
+        <i class="fab fa-whatsapp text-2xl mr-2"></i>
+        <span class="hidden md:block">Asistente Virtual del Banco</span>
+      </a>
+    </footer>
+  </body>
+</html>

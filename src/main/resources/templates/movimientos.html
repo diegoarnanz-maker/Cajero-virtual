@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Movimientos - Cajero Virtual</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+  <body class="flex flex-col min-h-screen bg-gray-100">
+    <!-- Navbar -->
+    <nav class="bg-gray-800 p-4">
+      <div class="container mx-auto flex justify-between items-center">
+        <a href="/cuenta" class="text-white font-bold text-xl">
+          Cajero Virtual
+        </a>
+        
+        <div class="flex items-center">
+          <a th:if="${session.usuario == null}" href="/cuenta/login" class="text-green-500 hover:text-green-700 ml-4">
+            Iniciar sesión
+          </a>
+          <a th:if="${session.usuario != null}" href="/cuenta/menu" class="text-green-500 hover:text-green-700 ml-4">
+            Realizar operaciones
+          </a>
+          <div th:if="${session.usuario != null}" class="ml-4 p-2 bg-gray-700 rounded-md">
+            <span class="text-white">
+              Cuenta: <span class="font-semibold" th:text="${session.cuenta.idCuenta}"></span>
+              | Usuario: <span class="font-semibold" th:text="${#strings.toUpperCase(session.usuario.username)}"></span>
+            </span>
+            
+            <a href="/cuenta/logout" class="text-green-500 hover:text-green-700 ml-4">
+              Cerrar sesión
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+    
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto mb-8 text-center px-4">
+      <div class="my-6">
+        <h1 class="text-4xl font-semibold text-gray-800">
+          Cartilla de movimientos
+        </h1>
+        <p th:if="${session.movimientos == null}" class="text-gray-500 mt-4">
+          No hay movimientos disponibles.
+        </p>
+      </div>
+
+      <div class="mt-10">
+        <div class="max-w-5xl mx-auto mt-6">
+          <table th:if="${session.movimientos != null}" class="min-w-full table-auto border-collapse">
+            <thead class="bg-gray-700 text-white">
+              <tr>
+                <th class="py-1 px-2 border-b border-gray-600 text-sm">Fecha</th>
+                <th class="py-1 px-2 border-b border-gray-600 text-sm">Operación</th>
+                <th class="py-1 px-2 border-b border-gray-600 text-sm">Cantidad</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                th:each="movimiento : ${session.movimientos}"
+                th:class="${#strings.toLowerCase(movimiento.operacion).contains('ingreso por transferencia') ? 'bg-blue-300' : 
+              (#strings.toLowerCase(movimiento.operacion).contains('extraccion por transferencia') ? 'bg-yellow-300' : 
+              (#strings.toLowerCase(movimiento.operacion) == 'ingreso' ? 'bg-green-300' : 
+              (#strings.toLowerCase(movimiento.operacion) == 'extraccion' ? 'bg-red-300' : 'bg-gray-300')))}"
+              >
+                <td th:text="${#dates.format(movimiento.fecha, 'dd/MM/yyyy HH:mm')}" class="py-2 px-4 border-b border-gray-600 text-sm"></td>
+                <td th:text="${movimiento.operacion}" class="py-2 px-4 border-b border-gray-600 text-sm"></td>
+                <td class="py-2 px-4 border-b border-gray-600 text-sm">
+                  <span th:text="${movimiento.cantidad}"></span> <span>€</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="max-w-4xl mx-auto mt-8 p-6 rounded-xl shadow-lg bg-green-100">
+        <div class="text-center mb-6">
+          <h2 class="text-2xl font-bold text-gray-800">
+            Resumen de la Cuenta #<span th:text="${session.cuenta.idCuenta}"></span>
+          </h2>
+          <h3 class="text-xl">Titular: <span th:text="${#strings.toUpperCase(session.usuario.username)}"></span></h3>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+          <div class="bg-white p-6 rounded-lg shadow-sm flex flex-col items-center">
+            <h3 class="text-lg font-semibold mb-2">Tipo de Cuenta</h3>
+            <p class="text-gray-900 text-lg" th:text="${session.cuenta.tipoCuenta}">
+              Tipo de Cuenta
+            </p>
+          </div>
+
+          <div class="bg-gray-200 p-6 rounded-lg shadow-sm flex flex-col items-center">
+            <h3 class="text-lg font-semibold mb-2">Saldo Actual</h3>
+            <p class="text-gray-900 text-lg" th:text="${session.cuenta.saldo != null ? session.cuenta.saldo : 0.00}"></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-8">
+        <a href="/cuenta/menu" class="text-green-500 bg-gray-800 hover:bg-green-500 hover:text-white border-2 border-green-500 rounded-lg px-6 py-2 mt-4 inline-block transition duration-300 ease-in-out shadow-lg transform hover:scale-105">
+          Volver al Menú
+        </a>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white p-6 text-center mt-auto">
+      <div class="container mx-auto flex justify-center items-center">
+        <div class="flex space-x-8">
+          <a href="https://github.com/diegoarnanz-maker" target="_blank" class="text-white hover:text-gray-400 transition duration-300 ease-in-out">
+            <i class="fab fa-github text-2xl"></i> GitHub
+          </a>
+          <a href="https://diegoarnanz-maker-portfolio.netlify.app/" target="_blank" class="text-white hover:text-gray-400 transition duration-300 ease-in-out">
+            <i class="fas fa-briefcase text-2xl"></i> Portfolio
+          </a>
+        </div>
+      </div>
+      <a href="https://wa.me/+34616252588" target="_blank" class="flex items-center fixed bottom-5 right-5 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition duration-300 ease-in-out" title="Asistente Virtual del Banco">
+        <i class="fab fa-whatsapp text-2xl mr-2"></i>
+        <span class="hidden md:block">Asistente Virtual del Banco</span>
+      </a>
+    </footer>
+  </body>
+</html>

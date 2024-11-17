@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Lista de Usuarios - Cajero Virtual</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100">
+    <!-- Navbar -->
+    <nav class="bg-gray-800 p-4">
+      <div class="container mx-auto flex justify-between items-center">
+        <a href="/admin/menu" class="text-white font-bold text-xl"
+          >Cajero Virtual -
+          <span
+            th:text="${#strings.toUpperCase(session.usuario.username)}"
+            class="text-red-500"
+          ></span
+        ></a>
+        <a href="/cuenta/logout" class="text-green-500 hover:text-green-700"
+          >Cerrar sesión</a
+        >
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-10">
+      <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Lista de Usuarios</h1>
+
+      <div class="max-w-4xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
+        <table class="min-w-full w-full">
+          <thead>
+            <tr>
+              <th class="py-2 px-4 border-b">ID</th>
+              <th class="py-2 px-4 border-b">Nombre de Usuario</th>
+              <th class="py-2 px-4 border-b">Rol</th>
+              <th class="py-2 px-4 border-b">Cuenta Asociada</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="usuario : ${usuarios}">
+              <td class="py-2 px-4 border-b text-center" th:text="${usuario.idUsuario}"></td>
+              <td class="py-2 px-4 border-b text-center" th:text="${usuario.username}"></td>
+              <td class="py-2 px-4 border-b text-center" th:text="${usuario.rol.nombreRol}"></td>
+              <td class="py-2 px-4 border-b text-center">
+                <span
+                  th:text="${usuario.cuenta != null ? usuario.cuenta.idCuenta : 'Sin cuenta'}"
+                ></span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mt-8 text-center">
+        <a
+          href="/admin/menu"
+          class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition duration-300"
+        >
+          Volver al Menú de Administración
+        </a>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Alta de Usuario y Cuenta - Cajero Virtual</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100">
+    <!-- Navbar -->
+    <nav class="bg-gray-800 p-4">
+      <div class="container mx-auto flex justify-between items-center">
+        <a href="/admin/menu" class="text-white font-bold text-xl">Cajero Virtual - <span th:text="${#strings.toUpperCase(session.usuario.username)}" class="text-red-500"></span></a>
+        <a href="/cuenta/logout" class="text-green-500 hover:text-green-700">Cerrar sesión</a>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex justify-center py-10">
+      <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-lg">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">Alta de Usuario y Cuenta</h1>
+        
+        <form action="/admin/alta-usuario-cuenta" method="POST">
+          <!-- Datos del Usuario -->
+          <div class="mb-4">
+            <label for="username" class="block text-gray-700 font-semibold mb-2">Nombre de Usuario</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              class="w-full p-3 border border-gray-300 rounded-lg"
+              placeholder="Nombre de usuario"
+              required
+            />
+          </div>
+
+          <div class="mb-4">
+            <label for="password" class="block text-gray-700 font-semibold mb-2">Contraseña</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="w-full p-3 border border-gray-300 rounded-lg"
+              placeholder="Contraseña"
+              required
+            />
+          </div>
+
+          <div class="mb-4">
+            <label for="rol" class="block text-gray-700 font-semibold mb-2">Rol</label>
+            <select
+              id="rol"
+              name="rol"
+              class="w-full p-3 border border-gray-300 rounded-lg"
+              required
+            >
+              <option value="Usuario">Usuario</option>
+              <option value="Administrador">Administrador</option>
+            </select>
+          </div>
+
+          <div class="mb-4">
+            <label for="tipoCuenta" class="block text-gray-700 font-semibold mb-2">Tipo de Cuenta</label>
+            <select
+              id="tipoCuenta"
+              name="tipoCuenta"
+              class="w-full p-3 border border-gray-300 rounded-lg"
+              required
+            >
+              <option value="Ahorros">Ahorros</option>
+              <option value="Corriente">Corriente</option>
+              <option value="Administrador">Administrador</option>
+            </select>
+          </div>
+
+          <div class="mb-4">
+            <label for="saldo" class="block text-gray-700 font-semibold mb-2">Saldo Inicial</label>
+            <input
+              type="number"
+              min="0"
+              id="saldo"
+              name="saldo"
+              class="w-full p-3 border border-gray-300 rounded-lg"
+              placeholder="Saldo inicial"
+              step="0.01"
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            class="w-full bg-green-500 text-white p-3 rounded-lg hover:bg-green-600 transition duration-300"
+          >
+            Crear Usuario y Cuenta
+          </button>
+        </form>
+      </div>
+    </main>
+  </body>
+</html>

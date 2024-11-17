@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ingreso de Dinero - Cajero Virtual</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+</head>
+<body class="flex flex-col min-h-screen bg-gray-100">
+
+    <!-- Navbar -->
+    <nav class="bg-gray-800 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+          <a href="/cuenta" class="text-white font-bold text-xl">
+            Cajero Virtual
+          </a>
+          
+          <div class="flex items-center">
+            <a th:if="${session.usuario == null}" href="/cuenta/login" class="text-green-500 hover:text-green-700 ml-4">
+              Iniciar sesión
+            </a>
+            <a th:if="${session.usuario != null}" href="/cuenta/menu" class="text-green-500 hover:text-green-700 ml-4">
+              Realizar operaciones
+            </a>
+            <div th:if="${session.usuario != null}" class="ml-4 p-2 bg-gray-700 rounded-md">
+              <span class="text-white">
+                Cuenta: <span class="font-semibold" th:text="${session.cuenta.idCuenta}"></span>
+                | Usuario: <span class="font-semibold" th:text="${#strings.toUpperCase(session.usuario.username)}"></span>
+              </span>
+              
+              <a href="/cuenta/logout" class="text-green-500 hover:text-green-700 ml-4">
+                Cerrar sesión
+              </a>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto my-8 text-center">
+        <h1 class="text-3xl font-bold text-gray-800">Cuenta #<span th:text="${session.cuenta.idCuenta}"></span></h1>
+
+        <p class="text-gray-700 mt-4">
+            Saldo Actual: 
+            <span th:text="${session.cuenta.saldo != null ? session.cuenta.saldo : 0.00}" class="bg-green-500 text-white p-1 rounded-lg "></span>
+        </p>
+
+        <div class="mt-8 bg-gray-900 p-6 rounded-lg shadow-md max-w-lg mx-auto">
+            <h2 class="text-2xl font-semibold text-white">Va a realizar un ingreso de dinero:</h2>
+        
+            <form action="/movimientos/ingresar" method="post" class="mt-4">
+                <div class="mb-4">
+                    <label for="cantidad" class="block text-gray-300">Introduzca cantidad:</label>
+                    <input type="number" id="cantidad" name="cantidad" class="mt-2 p-2 border border-gray-300 rounded w-full text-gray-800" min="0" step="any" required>
+                </div>
+        
+                <button type="submit" class="mt-4 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition">Ingresar</button>
+            </form>
+        </div>
+        
+
+        <div class="mt-8 flex justify-center gap-4">
+            <a href="/cuenta/menu" class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition">Cancelar</a>
+            <a href="/movimientos/listar" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">Ver Cartilla</a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white p-4 text-center mt-auto">
+        <div class="container mx-auto flex justify-center items-center">
+            <div class="flex space-x-6">
+                <a href="https://github.com/diegoarnanz-maker" target="_blank" class="text-white hover:text-gray-400 transition duration-300 ease-in-out">
+                    <i class="fab fa-github text-2xl"></i> GitHub
+                </a>
+                <a href="https://diegoarnanz-maker-portfolio.netlify.app/" target="_blank" class="text-white hover:text-gray-400 transition duration-300 ease-in-out">
+                    <i class="fas fa-briefcase text-2xl"></i> Portfolio
+                </a>
+            </div>
+        </div>
+        <!-- Monería, tipo asistente por si tienes algún problema -->
+        <a href="https://wa.me/+34616252588"
+           target="_blank"
+           class="flex items-center fixed bottom-5 right-5 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition duration-300 ease-in-out"
+           title="Asistente Virtual del Banco">
+            <i class="fab fa-whatsapp text-2xl mr-2"></i>
+            <span class="hidden md:block">Asistente Virtual del Banco</span>
+        </a>
+    </footer>
+
+</body>
+</html>
